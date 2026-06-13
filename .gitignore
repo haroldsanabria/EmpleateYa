@@ -1,0 +1,39 @@
+# Dependencias
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+ 
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+
+ 
+
+# Archivos de build/compilación
+dist/
+build/
+frontend/dist/
+frontend/build/
+
+ 
+
+# Logs
+*.log
+npm-debug.log*
+
+ 
+
+# Archivos del sistema/editor
+.DS_Store
+.vscode/
+*.swp
+
+ 
+
+# Otros
+coverage/
+.cache/
+
