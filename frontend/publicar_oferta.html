@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Publicar oferta</title>
+<link rel="stylesheet" href="CSS/styles.css"></head>
+<body class="inicio">
+  <div class="header-top"><div class="cuenta" onclick="location.href='empresa.html'">Volver</div></div>
+
+  <div class="contenedor">
+    <h1>Publicar oferta</h1>
+    <form id="formOferta" class="formulario-registro">
+      <input id="ofertaTitulo" placeholder="Título" required>
+      <input id="ofertaUbicacion" placeholder="Ubicación / link G">
+      <select id="ofertaArea"><option value="programacion">programacion<option value="casa">casa<option value="finansas">finansas</option><option value="Ventas">Ventas</option></select>
+      <textarea id="ofertaDesc" placeholder="Descripción"></textarea>
+      <button class="boton" type="submit">Publicar</button>
+    </form>
+  </div>
+
+  <script src="JS/empresa.js"></script>
+</body>
+</html>

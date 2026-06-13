@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Empresa</title>
+<link rel="stylesheet" href="CSS/styles.css"></head>
+<body class="inicio">
+  <div class="header-top"><div class="cuenta" onclick="location.href='perfil_empresa.html'">Mi cuenta</div></div>
+
+  <div class="contenedor wide">
+    <h1>Panel Empresa</h1>
+    <p>Encuentra candidatos o publica una oferta</p>
+
+    <div style="display:flex;gap:12px;margin-bottom:12px">
+      <a class="boton" href="publicar_oferta.html">Publicar oferta</a>
+      <button class="boton" onclick="cargarCandidatos()">Ver candidatos</button>
+    </div>
+
+    <div id="listaCandidatos" class="list-offers"></div>
+  </div>
+
+  <script src="JS/empresa.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro - EmpléateYA</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body class="inicio">
+  <div class="contenedor">
+    <h1>Regístrate</h1>
+    <p>Selecciona el tipo de cuenta y completa los datos</p>
+
+    <form id="formRegistro" class="formulario-registro">
+      <select id="tipoCuenta" required>
+        <option value="usuario">Soy usuario</option>
+        <option value="empresa">Soy empresa</option>
+      </select>
+
+      <input id="regNombre" type="text" placeholder="Nombre / Empresa" required>
+      <input id="regEmail" type="email" placeholder="Correo" required>
+      <input id="regPass" type="password" placeholder="Contraseña" required>
+
+      <!-- campos extra para empresa -->
+      <input id="regDireccion" type="text" placeholder="Dirección (si es empresa)" style="display:none">
+      <input id="regFoto" type="text" placeholder="URL foto/logo (opcional)" style="display:none">
+
+      <button class="boton" type="submit">Crear cuenta</button>
+    </form>
+
+    <p class="texto-login">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
+  </div>
+
+  <script src="JS/auth.js"></script>
+</body>
+</html>

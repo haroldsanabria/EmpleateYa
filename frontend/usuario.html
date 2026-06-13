@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Ofertas</title>
+<link rel="stylesheet" href="CSS/styles.css"></head>
+<body class="inicio">
+  <div class="header-top"><div class="cuenta" onclick="location.href='perfil_usuario.html'">Mi cuenta</div></div>
+
+  <div class="contenedor wide">
+    <h1>Ofertas disponibles</h1>
+
+    <div class="search-row">
+      <input id="search" placeholder="Buscar por título, empresa o ubicación">
+      <div class="filters">
+        <select id="filtroArea"><option value="">Todas</option><option value="programacion">programacion</option><option value="Ventas">Ventas</option></select>
+        <button class="boton" onclick="aplicarFiltro()">Filtrar</button>
+      </div>
+    </div>
+
+    <div id="listaOfertas" class="list-offers"></div>
+  </div>
+
+  <script src="JS/usuario.js"></script>x| 
+</body>
+</html>

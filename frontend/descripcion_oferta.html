@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Descripción de la Oferta</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
+
+<body class="inicio">
+
+  <!-- BARRA SUPERIOR -->
+  <div class="header-top">
+    <div class="cuenta" onclick="location.href='perfil_usuario.html'">Mi cuenta</div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="contenedor wide">
+
+    <h1 id="detalleTitulo">Cargando...</h1>
+
+    <div class="card big">
+      <p><strong>Empresa:</strong> <span id="detalleEmpresa"></span></p>
+      <p><strong>Ubicación:</strong> <span id="detalleUbicacion"></span></p>
+      <p><strong>Área:</strong> <span id="detalleArea"></span></p>
+
+      <h3 style="margin-top:20px;">Descripción del trabajo</h3>
+      <p id="detalleDescripcion" style="margin-top:8px;"></p>
+    </div>
+
+    <button class="boton grande" style="margin-top:25px;" onclick="volver()">
+      ← Volver a las ofertas
+    </button>
+
+  </div>
+
+  <script src="JS/usuario.js"></script>
+
+  <script>
+    function volver(){
+      window.location.href = "usuario.html";
+    }
+  </script>
+
+</body>
+</html>

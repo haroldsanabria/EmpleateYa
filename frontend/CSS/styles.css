@@ -1,0 +1,251 @@
+/* CSS/styles.css - Estética verde/negra elegante */
+/* Versión mejorada sin romper nada */
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body.inicio{
+  font-family:'Poppins', Arial, sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  background: url('/FONDO.jpeg') center/cover no-repeat;
+  background-attachment: fixed;
+
+  /* 💠 Suave fade-in al cargar */
+  animation: fadeInBg 1.5s ease-out;
+}
+
+/* 🔥 Animación del fondo */
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Contenedor central */
+.contenedor{
+  background: rgba(0,0,0,0.55);
+  padding: 36px 44px;
+  border-radius: 16px;
+  width: 92%;
+  max-width: 460px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  color: #e9f3ef;
+
+  /* 💠 Animación de entrada */
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* TITULOS */
+.contenedor h1{
+  font-size: 2.1rem;
+  margin-bottom: 8px;
+  color: #f4f7f6;
+
+  /* Glow suave */
+  text-shadow: 0 0 8px rgba(72,224,123,0.35);
+}
+
+.contenedor h1 span{
+  color: #48e07b;
+  font-weight:700;
+  text-shadow: 0 0 6px rgba(72,224,123,0.35);
+}
+
+.contenedor p{
+  color: #d9e7dd;
+  margin-bottom:18px;
+}
+
+/* FORM */
+.formulario-registro{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.formulario-registro input,
+.formulario-registro select,
+.formulario-registro textarea{
+  padding:12px 14px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  background: rgba(255,255,255,0.03);
+  color: #eaf6ef;
+  font-size:15px;
+  transition: box-shadow .18s, transform .12s, background .2s;
+}
+
+.formulario-registro textarea{
+  resize:vertical;
+  min-height:100px;
+}
+
+/* FOCUS */
+.formulario-registro input:focus,
+.formulario-registro select:focus,
+.formulario-registro textarea:focus{
+  box-shadow: 0 6px 18px rgba(72,224,123,0.22),
+              inset 0 0 0 1px rgba(72,224,123,0.25);
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.06);
+}
+
+/* BOTONES */
+.boton{
+  display:inline-block;
+  padding:12px 18px;
+  background: linear-gradient(180deg,#20b86a,#158b4b);
+  color:#fff;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+  font-size:16px;
+  transition: transform .12s, filter .12s, box-shadow .18s;
+  text-decoration:none;
+  text-align:center;
+}
+
+.boton:hover{
+  transform: translateY(-3px);
+  filter:brightness(.98);
+  box-shadow: 0 8px 20px rgba(72,224,123,0.25);
+}
+
+.boton.sec{
+  background: linear-gradient(180deg,#2fae73,#1b8f45);
+}
+
+/* TEXTO PEQUEÑO */
+.texto-login{
+  margin-top:12px;
+  font-size:0.92rem;
+  color:#d0e8d6;
+}
+
+.texto-login a{
+  color:#9ef2a5;
+  font-weight:700;
+  text-decoration:none;
+}
+
+.texto-login a:hover{
+  text-decoration:underline;
+}
+
+/* HEADER TOP */
+.header-top{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:50;
+}
+
+.header-top .cuenta{
+  background: rgba(0,0,0,0.45);
+  padding:8px 12px;
+  border-radius:10px;
+  color:#eaf6ef;
+  cursor:pointer;
+  border:1px solid rgba(72,224,123,0.08);
+
+  /* Glow suave al pasar */
+  transition: box-shadow .15s, transform .12s;
+}
+
+.header-top .cuenta:hover{
+  box-shadow: 0 0 10px rgba(72,224,123,0.3);
+  transform: scale(1.03);
+}
+
+/* LAYOUT ANCHO */
+.contenedor.wide{
+  max-width: 960px;
+  padding: 28px;
+}
+
+/* TARJETAS */
+.list-offers{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:12px;
+}
+
+.card{
+  background: rgba(255,255,255,0.03);
+  padding:14px;
+  border-radius:12px;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform .15s, box-shadow .15s;
+}
+
+/* Hover PRO */
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.4);
+}
+
+/* SEARCH */
+.search-row{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+  align-items:center;
+}
+
+.search-row input{
+  flex:1;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,0.03);
+  color:#eaf6ef;
+}
+
+/* FILTROS */
+.filters{
+  display:flex;
+  gap:8px;
+}
+
+/* CARD GRANDE */
+.card.big{
+  padding:25px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  border-radius:14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size:1.1rem;
+  color:#e3f7e5;
+  line-height:1.6;
+}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .contenedor{
+    padding:22px;
+    max-width:94%;
+  }
+  .header-top{
+    right:10px;
+    top:10px;
+  }
+  .contenedor h1{
+    font-size:1.6rem;
+  }
+}

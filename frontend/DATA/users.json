@@ -1,0 +1,4 @@
+[
+  {"tipo":"usuario","nombre":"María Perez","email":"maria@ejemplo.com","pass":"1234","profesion":"Diseñadora"},
+  {"tipo":"empresa","nombre":"ACME S.A.","email":"rrhh@acme.com","pass":"abcd","direccion":"Cll 50"}
+]

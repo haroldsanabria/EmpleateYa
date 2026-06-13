@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Perfil Usuario</title>
+<link rel="stylesheet" href="CSS/styles.css"></head>
+<body class="inicio">
+  <div class="header-top"><div class="cuenta" onclick="location.href='usuario.html'">Volver</div></div>
+
+  <div class="contenedor">
+    <h1>Mi perfil</h1>
+    <form id="perfilForm" class="formulario-registro">
+      <input id="perfilNombre" placeholder="Nombre" required>
+      <input id="perfilApellido" placeholder="Apellido">
+      <input id="perfilProfesion" placeholder="Profesión">
+      <input id="perfilDedicacion" placeholder="¿A qué te dedicas?">
+      <input id="perfilBusqueda" placeholder="Qué trabajos buscas">
+      <input id="perfilHojaVida" type="file" accept="application/pdf">
+      <button class="boton" type="submit">Guardar</button>
+    </form>
+  </div>
+
+  <script src="JS/usuario.js"></script>
+</body>
+</html>
