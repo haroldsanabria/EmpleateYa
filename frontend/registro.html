@@ -10,22 +10,33 @@
     <h1>Regístrate</h1>
     <p>Selecciona el tipo de cuenta y completa los datos</p>
 
-    <form id="formRegistro" class="formulario-registro">
-      <select id="tipoCuenta" required>
-        <option value="usuario">Soy usuario</option>
-        <option value="empresa">Soy empresa</option>
-      </select>
+<form id="formRegistro" class="formulario-registro">
 
-      <input id="regNombre" type="text" placeholder="Nombre / Empresa" required>
-      <input id="regEmail" type="email" placeholder="Correo" required>
-      <input id="regPass" type="password" placeholder="Contraseña" required>
+  <input id="regNombre" type="text"
+         placeholder="Nombre completo" required>
 
-      <!-- campos extra para empresa -->
-      <input id="regDireccion" type="text" placeholder="Dirección (si es empresa)" style="display:none">
-      <input id="regFoto" type="text" placeholder="URL foto/logo (opcional)" style="display:none">
+  <input id="regDocumento" type="number"
+         placeholder="Número de documento" required>
 
-      <button class="boton" type="submit">Crear cuenta</button>
-    </form>
+  <input id="regEmail" type="email"
+         placeholder="Correo electrónico" required>
+
+  <input id="regPass" type="password"
+         placeholder="Contraseña" required>
+
+  <input id="regCiudad" type="text"
+         placeholder="Ciudad" required>
+
+  <textarea id="regExperiencia"
+            placeholder="Describe tu experiencia laboral"
+            rows="4"
+            required></textarea>
+
+  <button class="boton" type="submit">
+    Crear cuenta
+  </button>
+
+</form>
 
     <p class="texto-login">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
   </div>

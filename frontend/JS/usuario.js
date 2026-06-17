@@ -48,28 +48,65 @@ function renderOffers(list){
 }
 
 
-// ========== BUSCADOR ==========
+// ========== CARGAR OFERTAS DESDE SQL SERVER ==========
 if(document.getElementById('listaOfertas')){
-  let all = getOffers();
-  renderOffers(all);
 
-  const search = document.getElementById('search');
-  search.addEventListener('input', e=>{
-    const q = e.target.value.toLowerCase();
-    const filtered = all.filter(o =>
-      (o.titulo + o.empresa + o.ubicacion).toLowerCase().includes(q)
-    );
-    renderOffers(filtered);
-  });
+  let all = [];
+
+  fetch('http://localhost:3000/ofertas')
+    .then(res => res.json())
+    .then(data => {
+
+      all = data;
+
+      renderOffers(all);
+
+      const search = document.getElementById('search');
+
+      search.addEventListener('input', e => {
+
+        const q = e.target.value.toLowerCase();
+
+        const filtered = all.filter(o =>
+          (
+            (o.titulo || '') +
+            (o.empresa || '') +
+            (o.ubicacion || '')
+          ).toLowerCase().includes(q)
+        );
+
+        renderOffers(filtered);
+
+      });
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error al cargar ofertas');
+    });
+
 }
 
 
 // ========== FILTRO POR ÁREA ==========
 function aplicarFiltro(){
-  const area = document.getElementById('filtroArea').value;
-  const all = getOffers();
-  if(!area) renderOffers(all);
-  else renderOffers(all.filter(o => o.area === area));
+
+    const area = document.getElementById('filtroArea').value;
+
+    fetch('http://localhost:3000/ofertas')
+        .then(res => res.json())
+        .then(data => {
+
+            if(!area){
+                renderOffers(data);
+            }else{
+                renderOffers(
+                    data.filter(o => o.area === area)
+                );
+            }
+
+        });
+
 }
 
 

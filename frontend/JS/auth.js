@@ -1,71 +1,95 @@
-// JS/auth.js - registro y login usando localStorage simple
+// REGISTRO
 
-function getUsers(){
-  return JSON.parse(localStorage.getItem('empleateya_users') || '[]');
-}
-function saveUsers(list){ localStorage.setItem('empleateya_users', JSON.stringify(list)); }
+if (document.getElementById('formRegistro')) {
 
-// REGISTRO (registro.html)
-if(document.getElementById('formRegistro')){
-  const form = document.getElementById('formRegistro');
-  const tipoSelect = document.getElementById('tipoCuenta');
+    const form = document.getElementById('formRegistro');
 
-  tipoSelect.addEventListener('change', ()=>{
-    const show = tipoSelect.value === 'empresa';
-    document.getElementById('regDireccion').style.display = show ? 'block' : 'none';
-    document.getElementById('regFoto').style.display = show ? 'block' : 'none';
-  });
+    form.addEventListener('submit', async (e) => {
 
-  form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const tipo = document.getElementById('tipoCuenta').value;
-    const nombre = document.getElementById('regNombre').value.trim();
-    const email = document.getElementById('regEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('regPass').value;
-    const direccion = document.getElementById('regDireccion').value || '';
-    const foto = document.getElementById('regFoto').value || '';
+        e.preventDefault();
 
-    const users = getUsers();
-    if(users.find(u => u.email === email)){
-      alert('Ese correo ya está registrado');
-      return;
-    }
+        const datos = {
+            nombre: document.getElementById('regNombre').value,
+            num_documento_identidad: document.getElementById('regDocumento').value,
+            correo: document.getElementById('regEmail').value,
+            contraseña: document.getElementById('regPass').value,
+            ciudad: document.getElementById('regCiudad').value,
+            experiencia: document.getElementById('regExperiencia').value
+        };
 
-    const newUser = { tipo, nombre, email, pass, direccion, foto, creado: Date.now() };
-    users.push(newUser);
-    saveUsers(users);
+        try {
 
-    // Guardar sesión
-    localStorage.setItem('empleateya_user', JSON.stringify(newUser));
-    window.location.href = 'opciones.html';
-  });
-}
+            const respuesta = await fetch('http://localhost:3000/registro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
 
-// LOGIN (login.html)
-if(document.getElementById('formLogin')){
-  const form = document.getElementById('formLogin');
-  form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value;
-    const users = getUsers();
-    const u = users.find(x => x.email === email && x.pass === pass);
-    if(!u){ alert('Credenciales incorrectas'); return; }
-    localStorage.setItem('empleateya_user', JSON.stringify(u));
-    window.location.href = 'opciones.html';
-  });
-}
-function cerrarSesion() {
-    // Borrar cualquier usuario o empresa activa
-    localStorage.removeItem("usuarioActivo");
-    localStorage.removeItem("empresaActiva");
+            const mensaje = await respuesta.text();
 
-    // Volver al formulario de registro
-    document.getElementById("registro").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
+            alert(mensaje);
 
-    // Reset form (opcional)
-    const forms = document.querySelectorAll("form");
-    forms.forEach(f => f.reset());
+            window.location.href = 'login.html';
+
+        } catch (error) {
+
+            console.error(error);
+            alert('Error al registrar usuario');
+
+        }
+
+    });
+
 }
 
+
+// LOGIN
+
+if (document.getElementById('formLogin')) {
+
+    const form = document.getElementById('formLogin');
+
+    form.addEventListener('submit', async (e) => {
+
+        e.preventDefault();
+
+        const datos = {
+            correo: document.getElementById('loginEmail').value,
+            contraseña: document.getElementById('loginPass').value
+        };
+
+        try {
+
+            const respuesta = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (resultado.success) {
+
+                alert('Bienvenido');
+                window.location.href = 'opciones.html';
+
+            } else {
+
+                alert(resultado.mensaje);
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+            alert('Error al iniciar sesión');
+
+        }
+
+    });
+
+}

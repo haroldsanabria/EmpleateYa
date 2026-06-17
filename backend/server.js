@@ -47,33 +47,99 @@ app.post('/registro', async (req, res) => {
             nombre,
             num_documento_identidad,
             correo,
+            contraseña,
             ciudad,
             experiencia
         } = req.body;
 
         await sql.query`
             INSERT INTO usuario
-            (nombre, num_documento_identidad, correo, ciudad, experiencia)
+            (nombre, num_documento_identidad, correo, contraseña, ciudad, experiencia)
             VALUES
-            (${nombre}, ${num_documento_identidad}, ${correo}, ${ciudad}, ${experiencia})
+            (${nombre}, ${num_documento_identidad}, ${correo}, ${contraseña}, ${ciudad}, ${experiencia})
         `;
 
         res.send('Usuario registrado correctamente');
+
     } catch (err) {
         console.error(err);
         res.status(500).send(err.message);
     }
 });
-app.get('/prueba-registro', async (req, res) => {
-    await sql.query`
-        INSERT INTO usuario
-        (nombre, num_documento_identidad, correo, ciudad, experiencia)
-        VALUES
-        ('Prueba Usuario', 123456, 'prueba@test.com', 'Zipaquirá', 'Sin experiencia')
-    `;
+app.post('/login', async (req, res) => {
+    try {
 
-    res.send('Registro insertado');
+        const { correo, contraseña } = req.body;
+
+        const result = await sql.query`
+            SELECT *
+            FROM usuario
+            WHERE correo = ${correo}
+            AND contraseña = ${contraseña}
+        `;
+
+        if (result.recordset.length > 0) {
+            res.json({
+                success: true,
+                mensaje: 'Login correcto'
+            });
+        } else {
+            res.status(401).json({
+                success: false,
+                mensaje: 'Correo o contraseña incorrectos'
+            });
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+    }
 });
+
+app.get('/ofertas', async (req, res) => {
+
+    try {
+
+        const result = await sql.query('SELECT * FROM oferta');
+
+        res.json(result.recordset);
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send(err.message);
+
+    }
+
+});
+
+app.post('/postular', async (req, res) => {
+
+    try {
+
+        const {
+            id_usuario,
+            id_oferta
+        } = req.body;
+
+        await sql.query`
+            INSERT INTO postulacion
+            (id_usuario, id_oferta, estado)
+            VALUES
+            (${id_usuario}, ${id_oferta}, 'Pendiente')
+        `;
+
+        res.send('Postulación realizada');
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send(err.message);
+
+    }
+
+});
+
 app.listen(3000, () => {
     console.log('Servidor corriendo en puerto 3000');
 });
