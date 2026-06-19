@@ -25,7 +25,11 @@ function renderOffers(list){
 
     // 🔥 NUEVO → guardar ID temporal para abrir la descripción
     div.addEventListener("click", () => {
-      localStorage.setItem("empleateya_selected_offer", index);
+      localStorage.setItem(
+        "empleateya_selected_offer",
+        of.id_oferta
+      );
+
       window.location.href = "descripcion_oferta.html";
     });
 
@@ -143,24 +147,86 @@ if(document.getElementById('perfilForm')){
     alert('Perfil guardado');
   });
 }
-if(document.getElementById("detalleTitulo")){
-  const index = localStorage.getItem("empleateya_selected_offer");
+if (document.getElementById("detalleTitulo")) {
 
-  if(index === null){
-    document.body.innerHTML = "<h2>Error: no se seleccionó oferta</h2>";
-  } else {
-    const offers = getOffers();
-    const of = offers[index];
+    const idOferta = parseInt(
+        localStorage.getItem("empleateya_selected_offer")
+    );
 
-    document.getElementById("detalleTitulo").innerText = of.titulo;
-    document.getElementById("detalleEmpresa").innerText = of.empresa;
-    document.getElementById("detalleUbicacion").innerText = of.ubicacion;
-    document.getElementById("detalleArea").innerText = of.area;
-    document.getElementById("detalleDescripcion").innerText = of.descripcion;
-  }
+    fetch("http://localhost:3000/ofertas")
+        .then(res => res.json())
+        .then(ofertas => {
+
+            const of = ofertas.find(
+                o => o.id_oferta === idOferta
+            );
+
+            if (!of) {
+                document.body.innerHTML =
+                    "<h2>Error: oferta no encontrada</h2>";
+                return;
+            }
+
+            document.getElementById("detalleTitulo").innerText = of.titulo;
+            document.getElementById("detalleEmpresa").innerText = of.empresa;
+            document.getElementById("detalleUbicacion").innerText = of.ubicacion;
+            document.getElementById("detalleArea").innerText = of.area;
+            document.getElementById("detalleDescripcion").innerText = of.descripcion;
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
 }
 function cerrarSesion(){
     localStorage.removeItem("empleateya_user");
     localStorage.removeItem("empleateya_empresa");
     window.location.href = "index.html"; // vuelves al login/registro
+}
+
+async function postularme() {
+
+    const usuario = JSON.parse(
+        localStorage.getItem('empleateya_user')
+    );
+
+    if (!usuario) {
+        alert('Debes iniciar sesión');
+        return;
+    }
+
+    const idUsuario = usuario.id_usuario;
+
+    const idOferta = localStorage.getItem(
+        'empleateya_selected_offer'
+    );
+
+    try {
+
+        const respuesta = await fetch(
+            'http://localhost:3000/postularme',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_usuario: idUsuario,
+                    id_oferta: idOferta
+                })
+            }
+        );
+
+        const resultado = await respuesta.json();
+
+        alert(resultado.mensaje);
+
+    } catch (error) {
+
+        console.error(error);
+        alert('Error al postularse');
+
+    }
+
 }

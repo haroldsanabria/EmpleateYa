@@ -79,15 +79,20 @@ app.post('/login', async (req, res) => {
         `;
 
         if (result.recordset.length > 0) {
+
             res.json({
                 success: true,
-                mensaje: 'Login correcto'
+                mensaje: 'Login correcto',
+                usuario: result.recordset[0]
             });
+
         } else {
+
             res.status(401).json({
                 success: false,
                 mensaje: 'Correo o contraseña incorrectos'
             });
+
         }
 
     } catch (err) {
@@ -138,6 +143,68 @@ app.post('/postular', async (req, res) => {
 
     }
 
+});
+
+app.post('/postular', async (req, res) => {
+
+    try {
+
+        const {
+            id_usuario,
+            id_oferta
+        } = req.body;
+
+        await sql.query`
+            INSERT INTO postulacion
+            (id_usuario, id_oferta, estado)
+            VALUES
+            (${id_usuario}, ${id_oferta}, 'Pendiente')
+        `;
+
+        res.send('Postulación realizada');
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send(err.message);
+
+    }
+
+});
+
+app.post('/postularme', async (req, res) => {
+
+    try {
+
+        const { id_usuario, id_oferta } = req.body;
+
+        await sql.query`
+            INSERT INTO postulacion
+            (id_usuario, id_oferta, fecha_postulacion, estado)
+            VALUES
+            (
+                ${id_usuario},
+                ${id_oferta},
+                GETDATE(),
+                'Pendiente'
+            )
+        `;
+
+        res.json({
+            success: true,
+            mensaje: 'Postulación realizada correctamente'
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            mensaje: 'Error al registrar la postulación'
+        });
+
+    }
 });
 
 app.listen(3000, () => {

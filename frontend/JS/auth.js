@@ -74,7 +74,13 @@ if (document.getElementById('formLogin')) {
 
             if (resultado.success) {
 
+                localStorage.setItem(
+                    'empleateya_user',
+                    JSON.stringify(resultado.usuario)
+                );
+
                 alert('Bienvenido');
+
                 window.location.href = 'opciones.html';
 
             } else {
