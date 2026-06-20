@@ -1,22 +1,39 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login - EmpléateYA</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Iniciar sesión - EmpléateYA</title>
   <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body class="inicio">
+
+  <!-- PANEL IZQUIERDO -->
+  <div class="hero-left">
+    <div class="hero-pill">✦ Plataforma de empleo</div>
+    <p class="hero-empleate">Empleate</p>
+    <p class="hero-ya">YA</p>
+    <p class="hero-sub">Tu próximo trabajo está a un clic.<br>Conectamos talento con oportunidades reales.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>2.4k+</strong><small>Vacantes activas</small></div>
+      <div class="hero-stat"><strong>98%</strong><small>Tasa de éxito</small></div>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
   <div class="contenedor">
-    <h1>Iniciar sesión</h1>
+    <h1>Bienvenido</h1>
+    <p>Accede a tu cuenta y encuentra tu oportunidad</p>
+
     <form id="formLogin" class="formulario-registro">
-      <input id="loginEmail" type="email" placeholder="Correo" required>
-      <input id="loginPass" type="password" placeholder="Contraseña" required>
+      <input id="loginEmail" type="email" placeholder="✉ Correo electrónico" required>
+      <input id="loginPass" type="password" placeholder="🔒 Contraseña" required>
       <button class="boton" type="submit">Entrar</button>
     </form>
+
     <p class="texto-login">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
   </div>
 
   <script src="JS/auth.js"></script>
 </body>
 </html>
-
