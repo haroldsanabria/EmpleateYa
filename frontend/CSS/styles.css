@@ -354,3 +354,52 @@ body.inicio:has(.contenedor.wide) .hero-left{
     top:10px;
   }
 }
+/* ─── SELECTOR USUARIO / EMPRESA ─── */
+.selector-tipo{
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.tipo-card{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1.5px solid rgba(72,224,123,0.12);
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: 'Poppins', Arial, sans-serif;
+  transition: transform .15s, box-shadow .18s, border-color .18s, background .18s;
+}
+
+.tipo-card:hover{
+  transform: translateY(-3px);
+  border-color: rgba(72,224,123,0.35);
+  background: rgba(255,255,255,0.05);
+}
+
+.tipo-card.activo{
+  border-color: #48e07b;
+  background: rgba(72,224,123,0.08);
+  box-shadow: 0 0 0 2px rgba(72,224,123,0.25), 0 8px 20px rgba(72,224,123,0.15);
+}
+
+.tipo-icono{
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.tipo-titulo{
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: #f4f7f6;
+}
+
+.tipo-desc{
+  font-size: 0.78rem;
+  color: rgba(200,240,210,0.5);
+}

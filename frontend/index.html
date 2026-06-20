@@ -23,12 +23,48 @@
   <!-- PANEL DERECHO -->
   <div class="contenedor">
     <h1>EmpléateYA</h1>
-    <p>Encuentra trabajo o publica ofertas fácilmente.</p>
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:8px">
-      <a class="boton" href="registro.html">Registrarse</a>
-      <a class="boton sec" href="login.html">Iniciar sesión</a>
+    <p>¿Cómo deseas ingresar?</p>
+
+    <div class="selector-tipo">
+      <button type="button" class="tipo-card" id="btnUsuario" onclick="seleccionarTipo('usuario')">
+        <span class="tipo-icono">👤</span>
+        <span class="tipo-titulo">Usuario</span>
+        <span class="tipo-desc">Busco empleo</span>
+      </button>
+
+      <button type="button" class="tipo-card" id="btnEmpresa" onclick="seleccionarTipo('empresa')">
+        <span class="tipo-icono">🏢</span>
+        <span class="tipo-titulo">Empresa</span>
+        <span class="tipo-desc">Publico ofertas</span>
+      </button>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
+      <a class="boton" id="linkRegistro" href="registro.html">Registrarse</a>
+      <a class="boton sec" id="linkLogin" href="login.html">Iniciar sesión</a>
     </div>
   </div>
+
+  <script>
+    function seleccionarTipo(tipo) {
+      document.getElementById('btnUsuario').classList.toggle('activo', tipo === 'usuario');
+      document.getElementById('btnEmpresa').classList.toggle('activo', tipo === 'empresa');
+
+      const linkRegistro = document.getElementById('linkRegistro');
+      const linkLogin = document.getElementById('linkLogin');
+
+      if (tipo === 'empresa') {
+        linkRegistro.href = 'registro.html?tipo=empresa';
+        linkLogin.href = 'login.html?tipo=empresa';
+      } else {
+        linkRegistro.href = 'registro.html?tipo=usuario';
+        linkLogin.href = 'login.html?tipo=usuario';
+      }
+    }
+
+    // Selección por defecto
+    seleccionarTipo('usuario');
+  </script>
 
 </body>
 </html>

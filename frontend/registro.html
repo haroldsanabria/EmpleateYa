@@ -25,18 +25,89 @@
     <h1>Regístrate</h1>
     <p>Selecciona el tipo de cuenta y completa los datos</p>
 
-    <form id="formRegistro" class="formulario-registro">
+    <!-- Selector de tipo de cuenta -->
+    <div class="selector-tipo">
+      <button type="button" class="tipo-card" id="btnTipoUsuario" onclick="cambiarTipo('usuario')">
+        <span class="tipo-icono">👤</span>
+        <span class="tipo-titulo">Usuario</span>
+        <span class="tipo-desc">Busco empleo</span>
+      </button>
+      <button type="button" class="tipo-card" id="btnTipoEmpresa" onclick="cambiarTipo('empresa')">
+        <span class="tipo-icono">🏢</span>
+        <span class="tipo-titulo">Empresa</span>
+        <span class="tipo-desc">Publico ofertas</span>
+      </button>
+    </div>
+
+    <form id="formRegistro" class="formulario-registro" style="margin-top:18px">
+
+      <!-- Campo oculto que guarda el tipo seleccionado -->
+      <input type="hidden" id="regTipo" value="usuario">
+
+      <!-- Campos comunes -->
       <input id="regNombre" type="text" placeholder="Nombre completo" required>
       <input id="regDocumento" type="number" placeholder="Número de documento" required>
       <input id="regEmail" type="email" placeholder="Correo electrónico" required>
       <input id="regPass" type="password" placeholder="Contraseña" required>
       <input id="regCiudad" type="text" placeholder="Ciudad" required>
-      <textarea id="regExperiencia" placeholder="Describe tu experiencia laboral" rows="4" required></textarea>
+
+      <!-- Campos solo USUARIO -->
+      <div id="camposUsuario" style="display:flex;flex-direction:column;gap:14px">
+        <textarea id="regExperiencia" placeholder="Describe tu experiencia laboral" rows="4"></textarea>
+        <input id="regProfesion" type="text" placeholder="Profesión u oficio">
+        <input id="regBusqueda" type="text" placeholder="¿Qué tipo de empleo buscas?">
+      </div>
+
+      <!-- Campos solo EMPRESA -->
+      <div id="camposEmpresa" style="display:none;flex-direction:column;gap:14px">
+        <input id="empNombreEmpresa" type="text" placeholder="Nombre de la empresa">
+        <input id="empDireccion" type="text" placeholder="Dirección / ubicación de la empresa">
+        <select id="empSector">
+          <option value="">Sector de la empresa</option>
+          <option value="tecnologia">Tecnología</option>
+          <option value="comercio">Comercio</option>
+          <option value="construccion">Construcción</option>
+          <option value="salud">Salud</option>
+          <option value="educacion">Educación</option>
+          <option value="alimentos">Alimentos</option>
+          <option value="otro">Otro</option>
+        </select>
+        <input id="empNit" type="text" placeholder="NIT / Registro mercantil">
+        <textarea id="empDescripcion" placeholder="Cuéntanos sobre tu empresa" rows="3"></textarea>
+      </div>
+
       <button class="boton" type="submit">Crear cuenta</button>
     </form>
 
     <p class="texto-login">¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a></p>
   </div>
+
+  <script>
+    // Lee ?tipo=empresa de la URL (viene desde index.html)
+    function leerTipoDeURL() {
+      const params = new URLSearchParams(window.location.search);
+      const tipo = params.get('tipo');
+      if (tipo === 'empresa') cambiarTipo('empresa');
+      else cambiarTipo('usuario');
+    }
+
+    function cambiarTipo(tipo) {
+      document.getElementById('regTipo').value = tipo;
+
+      document.getElementById('btnTipoUsuario').classList.toggle('activo', tipo === 'usuario');
+      document.getElementById('btnTipoEmpresa').classList.toggle('activo', tipo === 'empresa');
+
+      document.getElementById('camposUsuario').style.display = tipo === 'usuario' ? 'flex' : 'none';
+      document.getElementById('camposEmpresa').style.display = tipo === 'empresa' ? 'flex' : 'none';
+
+      // Required dinámico para no bloquear el submit con campos ocultos
+      document.getElementById('regExperiencia').required = (tipo === 'usuario');
+      document.getElementById('empNombreEmpresa').required = (tipo === 'empresa');
+      document.getElementById('empDireccion').required = (tipo === 'empresa');
+    }
+
+    document.addEventListener('DOMContentLoaded', leerTipoDeURL);
+  </script>
 
   <script src="JS/auth.js"></script>
 </body>

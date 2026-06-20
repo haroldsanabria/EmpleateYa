@@ -1,25 +1,34 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Perfil Empresa</title>
-<link rel="stylesheet" href="CSS/styles.css"></head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EmpléateYA - Inicio</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
 <body class="inicio">
-  <div class="header-top"><div class="cuenta" onclick="location.href='empresa.html'">Volver</div></div>
 
-  <div class="contenedor">
-    <h1>Perfil empresa</h1>
-    <form id="perfilEmpresaForm" class="formulario-registro">
-      <input id="empresaNombre" placeholder="Nombre empresa">
-      <input id="empresaDireccion" placeholder="Dirección / Link">
-      <input id="empresaFoto" placeholder="Buscamos">
-      <input id="empresaFoto" placeholder="Descripcion">
-      <button class="boton" type="submit">Guardar</button>
-      <button class="boton grande" onclick="cerrarSesion()">Cerrar sesión</button>
-
-
-
-    </form>
+  <!-- PANEL IZQUIERDO -->
+  <div class="hero-left">
+    <div class="hero-pill">✦ Plataforma de empleo</div>
+    <p class="hero-empleate">Empleate</p>
+    <p class="hero-ya">YA</p>
+    <p class="hero-sub">Tu próximo trabajo está a un clic.<br>Conectamos talento con oportunidades reales.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>2.4k+</strong><small>Vacantes activas</small></div>
+      <div class="hero-stat"><strong>98%</strong><small>Tasa de éxito</small></div>
+    </div>
   </div>
 
-  <script src="JS/empresa.js"></script>
+  <!-- PANEL DERECHO -->
+  <div class="contenedor">
+    <h1>EmpléateYA</h1>
+    <p>Encuentra trabajo o publica ofertas fácilmente.</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:8px">
+      <a class="boton" href="registro.html">Registrarse</a>
+      <a class="boton sec" href="login.html">Iniciar sesión</a>
+    </div>
+  </div>
+
 </body>
 </html>
