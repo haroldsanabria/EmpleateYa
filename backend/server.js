@@ -207,6 +207,44 @@ app.post('/postularme', async (req, res) => {
     }
 });
 
+app.post('/crear-oferta', async (req, res) => {
+
+    const {
+        id_empresa,
+        titulo,
+        descripcion,
+        salario,
+        ubicacion
+    } = req.body;
+
+    await sql.query`
+        INSERT INTO oferta
+        (
+            id_empresa,
+            titulo,
+            descripcion,
+            salario,
+            ubicacion,
+            fecha_publicacion
+        )
+        VALUES
+        (
+            ${id_empresa},
+            ${titulo},
+            ${descripcion},
+            ${salario},
+            ${ubicacion},
+            GETDATE()
+        )
+    `;
+
+    res.json({
+        success: true,
+        mensaje: 'Oferta publicada correctamente'
+    });
+
+});
+
 app.listen(3000, () => {
     console.log('Servidor corriendo en puerto 3000');
 });
