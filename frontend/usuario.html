@@ -1,24 +1,126 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Ofertas</title>
-<link rel="stylesheet" href="CSS/styles.css"></head>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ofertas - EmpléateYA</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
 <body class="inicio">
-  <div class="header-top"><div class="cuenta" onclick="location.href='perfil_usuario.html'">Mi cuenta</div></div>
+  <div class="header-top">
+    <div class="cuenta" onclick="location.href='perfil_usuario.html'">Mi cuenta</div>
+  </div>
 
   <div class="contenedor wide">
-    <h1>Ofertas disponibles</h1>
 
-    <div class="search-row">
-      <input id="search" placeholder="Buscar por título, empresa o ubicación">
-      <div class="filters">
-        <select id="filtroArea"><option value="">Todas</option><option value="programacion">programacion</option><option value="Ventas">Ventas</option></select>
-        <button class="boton" onclick="aplicarFiltro()">Filtrar</button>
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="cambiarPanel('ofertas',this)">🔍 Ofertas de empleo</button>
+      <button class="panel-tab" onclick="cambiarPanel('postulaciones',this)">📋 Mis postulaciones</button>
+    </div>
+
+    <!-- ── PANEL OFERTAS ── -->
+    <div id="panelOfertas" class="panel-seccion visible">
+      <div class="arbol-layout">
+
+        <!-- SIDEBAR FILTROS -->
+        <aside class="arbol-sidebar">
+          <div class="sidebar-titulo">Filtros</div>
+
+          <div class="filtro-grupo">
+            <div class="filtro-label">Buscar</div>
+            <input id="search" class="filtro-input" placeholder="Cargo, empresa...">
+          </div>
+
+          <div class="filtro-grupo">
+            <div class="filtro-label">Área</div>
+            <select id="filtroArea" class="filtro-select">
+              <option value="">Todas las áreas</option>
+              <option value="programacion">Programación</option>
+              <option value="casa">Servicios domésticos</option>
+              <option value="finansas">Finanzas</option>
+              <option value="Ventas">Ventas</option>
+              <option value="salud">Salud</option>
+              <option value="educacion">Educación</option>
+              <option value="construccion">Construcción</option>
+              <option value="logistica">Logística</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="filtro-grupo">
+            <div class="filtro-label">Modalidad</div>
+            <div class="filtro-chips" id="filtroModalidad">
+              <button class="chip activo" data-val="">Todos</button>
+              <button class="chip" data-val="presencial">Presencial</button>
+              <button class="chip" data-val="remoto">Remoto</button>
+              <button class="chip" data-val="hibrido">Híbrido</button>
+            </div>
+          </div>
+
+          <div class="filtro-grupo">
+            <div class="filtro-label">Tipo de contrato</div>
+            <div class="filtro-chips" id="filtroContrato">
+              <button class="chip activo" data-val="">Todos</button>
+              <button class="chip" data-val="indefinido">Indefinido</button>
+              <button class="chip" data-val="fijo">Fijo</button>
+              <button class="chip" data-val="prestacion">Prestación</button>
+              <button class="chip" data-val="practica">Práctica</button>
+            </div>
+          </div>
+
+          <div class="filtro-grupo">
+            <div class="filtro-label">Salario mínimo</div>
+            <div class="filtro-chips" id="filtroSalario">
+              <button class="chip activo" data-val="0">Cualquiera</button>
+              <button class="chip" data-val="1500000">$1.5M+</button>
+              <button class="chip" data-val="2000000">$2M+</button>
+              <button class="chip" data-val="3000000">$3M+</button>
+              <button class="chip" data-val="5000000">$5M+</button>
+            </div>
+          </div>
+
+          <button class="boton" style="width:100%;margin-top:8px" onclick="aplicarFiltro()">Aplicar filtros</button>
+          <button class="chip-clear" onclick="limpiarFiltros()">✕ Limpiar filtros</button>
+        </aside>
+
+        <!-- LISTA OFERTAS -->
+        <div class="arbol-main">
+          <div class="arbol-header">
+            <span id="contadorOfertas" class="arbol-contador"></span>
+            <div class="arbol-orden">
+              <button class="chip activo" onclick="ordenar('reciente',this)">Recientes</button>
+              <button class="chip" onclick="ordenar('salario',this)">Mayor salario</button>
+            </div>
+          </div>
+          <div id="listaOfertas" class="arbol-lista"></div>
+        </div>
+
       </div>
     </div>
 
-    <div id="listaOfertas" class="list-offers"></div>
+    <!-- ── PANEL POSTULACIONES ── -->
+    <div id="panelPostulaciones" class="panel-seccion">
+      <div class="arbol-layout">
+
+        <!-- SIDEBAR RESUMEN -->
+        <aside class="arbol-sidebar">
+          <div class="sidebar-titulo">Resumen</div>
+          <div id="resumenPostulaciones" class="resumen-box"></div>
+        </aside>
+
+        <!-- LISTA POSTULACIONES -->
+        <div class="arbol-main">
+          <div class="arbol-header">
+            <span id="contadorPost" class="arbol-contador"></span>
+          </div>
+          <div id="listaPostulaciones" class="arbol-lista"></div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
-  <script src="JS/usuario.js"></script>x| 
+  <script src="JS/usuario.js"></script>
 </body>
 </html>

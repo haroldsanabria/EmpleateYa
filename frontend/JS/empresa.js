@@ -1,64 +1,199 @@
-// JS/empresa.js - publicar oferta y ver candidatos
+function postularme(ofertaId, tituloOferta){
 
-function getUsers(){ return JSON.parse(localStorage.getItem('empleateya_users') || '[]'); }
-function getOffers(){ return JSON.parse(localStorage.getItem('empleateya_offers') || '[]'); }
-function saveOffers(list){ localStorage.setItem('empleateya_offers', JSON.stringify(list)); }
+    const user = JSON.parse(localStorage.getItem('empleateya_user') || 'null');
 
-// Publicar oferta (publicar_oferta.html)
-if(document.getElementById('formOferta')){
-  document.getElementById('formOferta').addEventListener('submit', e=>{
-    e.preventDefault();
-    const titulo = document.getElementById('ofertaTitulo').value.trim();
-    const ubic = document.getElementById('ofertaUbicacion').value.trim();
-    const area = document.getElementById('ofertaArea').value;
-    const desc = document.getElementById('ofertaDesc').value.trim();
-    const offers = getOffers();
-    const user = JSON.parse(localStorage.getItem('empleateya_user') || '{}');
-    offers.push({ titulo, ubicacion: ubic, area, descripcion: desc, empresa: user?.nombre || 'Empresa' });
-    saveOffers(offers);
-    alert('Oferta publicada');
-    window.location.href = 'empresa.html';
-  });
+    if(!user || user.tipo !== 'usuario'){
+        alert("Debes iniciar sesión como usuario.");
+        return;
+    }
+
+    let postulaciones = getPostulaciones();
+
+    const existe = postulaciones.find(p =>
+        p.ofertaId === ofertaId &&
+        p.email === user.email
+    );
+
+    if(existe){
+        alert("Ya te postulaste a esta oferta.");
+        return;
+    }
+
+    postulaciones.push({
+
+        id: Date.now(),
+
+        ofertaId,
+
+        tituloOferta,
+
+        nombre: user.nombre,
+
+        documento: user.documento || "",
+
+        email: user.email,
+
+        telefono: user.telefono || user.whatsapp || "",
+
+        ciudad: user.ciudad || "",
+
+        profesion: user.profesion || "",
+
+        experiencia: user.experiencia || "",
+
+        busqueda: user.busqueda || "",
+
+        foto: user.foto || "",
+
+        fecha: new Date().toLocaleString(),
+
+        estado: "Pendiente"
+
+    });
+
+    savePostulaciones(postulaciones);
+
+    alert("¡Te postulaste correctamente!");
+
+    renderPostulaciones();
+
+    const modal = document.getElementById("modalDetalle");
+
+    if(modal) modal.remove();
+
 }
+function togglePostulantes(ofertaId, postulantes){
 
-// Cargar candidatos (empresa.html)
-function cargarCandidatos(){
-  const cont = document.getElementById('listaCandidatos'); if(!cont) return;
-  const users = getUsers().filter(u => u.tipo === 'usuario');
-  cont.innerHTML = '';
-  users.forEach(u => {
-    const d = document.createElement('div');
-    d.className = 'card';
-    d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
-      <div><strong>${u.nombre}</strong><div style="font-size:0.9rem;color:#cfe9d1">${u.profesion || ''} • ${u.busqueda || ''}</div></div>
-      <div><button class="boton" onclick="alert('Contacto: ${u.email}')">Contactar</button></div>
-    </div>`;
-    cont.appendChild(d);
-  });
+    const cont = document.getElementById("postulantes-" + ofertaId);
+
+    if(!cont) return;
+
+    if(cont.style.display === "flex"){
+
+        cont.style.display = "none";
+
+        return;
+
+    }
+
+    cont.style.display = "flex";
+    cont.style.flexDirection = "column";
+    cont.style.gap = "15px";
+
+    if(postulantes.length === 0){
+
+        cont.innerHTML = `
+            <div class="card">
+                <h3>No hay postulaciones</h3>
+                <p>Todavía ningún usuario se ha postulado a esta oferta.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    cont.innerHTML = "";
+
+    postulantes.forEach(p=>{
+
+        const tarjeta = document.createElement("div");
+
+        tarjeta.className = "card";
+
+        tarjeta.innerHTML = `
+
+            <h3>${p.nombre}</h3>
+
+            <hr>
+
+            <p><strong>📄 Documento:</strong> ${p.documento || "No registrado"}</p>
+
+            <p><strong>📧 Correo:</strong> ${p.email}</p>
+
+            <p><strong>📱 Teléfono:</strong> ${p.telefono || "No registrado"}</p>
+
+            <p><strong>📍 Ciudad:</strong> ${p.ciudad || "No registrada"}</p>
+
+            <p><strong>💼 Profesión:</strong> ${p.profesion || "No registrada"}</p>
+
+            <p><strong>🎯 Empleo buscado:</strong> ${p.busqueda || "No especificado"}</p>
+
+            <p><strong>📝 Estado:</strong> ${p.estado}</p>
+
+            <p><strong>📅 Fecha:</strong> ${p.fecha}</p>
+
+            <p><strong>📚 Experiencia:</strong></p>
+
+            <div style="background:#f5f5f5;padding:10px;border-radius:8px;color:#333">
+                ${p.experiencia || "Sin experiencia registrada"}
+            </div>
+
+            <br>
+
+            <div style="display:flex;gap:10px">
+
+                <a
+                    class="boton"
+                    target="_blank"
+                    href="https://wa.me/57${(p.telefono || "").replace(/[^0-9]/g,"")}">
+                    WhatsApp
+                </a>
+
+                <button
+                    class="boton"
+                    style="background:#27ae60"
+                    onclick="cambiarEstado(${p.id},'Aceptado')">
+
+                    Aceptar
+
+                </button>
+
+                <button
+                    class="boton"
+                    style="background:#c0392b"
+                    onclick="cambiarEstado(${p.id},'Rechazado')">
+
+                    Rechazar
+
+                </button>
+
+            </div>
+
+        `;
+
+        cont.appendChild(tarjeta);
+
+    });
+
 }
+function cambiarEstado(idPostulacion, nuevoEstado){
 
-// Perfil empresa (perfil_empresa.html)
-if(document.getElementById('perfilEmpresaForm')){
-  const user = JSON.parse(localStorage.getItem('empleateya_user') || 'null');
-  document.getElementById('empresaNombre').value = user?.nombre || '';
-  document.getElementById('empresaDireccion').value = user?.direccion || '';
-  document.getElementById('empresaFoto').value = user?.foto || '';
+    let postulaciones = getPostulaciones();
 
-  document.getElementById('perfilEmpresaForm').addEventListener('submit', e=>{
-    e.preventDefault();
-    const u = JSON.parse(localStorage.getItem('empleateya_user'));
-    u.nombre = document.getElementById('empresaNombre').value;
-    u.direccion = document.getElementById('empresaDireccion').value;
-    u.foto = document.getElementById('empresaFoto').value;
-    localStorage.setItem('empleateya_user', JSON.stringify(u));
-    let users = getUsers();
-    users = users.map(x => x.email === u.email ? u : x);
-    localStorage.setItem('empleateya_users', JSON.stringify(users));
-    alert('Perfil empresa guardado');
-  });
-}
-function cerrarSesion(){
-    localStorage.removeItem("empleateya_user");
-    localStorage.removeItem("empleateya_empresa");
-    window.location.href = "index.html"; // vuelves al login/registro
+    postulaciones = postulaciones.map(post => {
+
+        if(post.id == idPostulacion){
+
+            post.estado = nuevoEstado;
+
+        }
+
+        return post;
+
+    });
+
+    savePostulaciones(postulaciones);
+
+    renderMisOfertas();
+
+    if(nuevoEstado === "Aceptado"){
+
+        alert("✅ El candidato fue aceptado.");
+
+    }else{
+
+        alert("❌ El candidato fue rechazado.");
+
+    }
+
 }

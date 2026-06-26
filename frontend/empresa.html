@@ -9,11 +9,18 @@
     <h1>Panel Empresa</h1>
     <p>Encuentra candidatos o publica una oferta</p>
 
-    <div style="display:flex;gap:12px;margin-bottom:12px">
+    <!-- Info de la empresa -->
+    <div id="infoEmpresa" class="empresa-info-card"></div>
+
+    <div style="display:flex;gap:12px;margin:18px 0">
       <a class="boton" href="publicar_oferta.html">Publicar oferta</a>
-      <button class="boton" onclick="cargarCandidatos()">Ver candidatos</button>
+      <button class="boton sec" type="button" onclick="cargarCandidatos()">Ver candidatos</button>
     </div>
 
+    <h2 class="seccion-titulo">Mis ofertas y postulantes</h2>
+    <div id="listaMisOfertas" class="list-offers"></div>
+
+    <h2 class="seccion-titulo">Candidatos disponibles</h2>
     <div id="listaCandidatos" class="list-offers"></div>
   </div>
 

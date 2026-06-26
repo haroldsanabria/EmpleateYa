@@ -1,23 +1,223 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Perfil Usuario</title>
-<link rel="stylesheet" href="CSS/styles.css"></head>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Mi Perfil - EmpléateYA</title>
+  <link rel="stylesheet" href="CSS/styles.css">
+</head>
 <body class="inicio">
-  <div class="header-top"><div class="cuenta" onclick="location.href='usuario.html'">Volver</div></div>
-
-  <div class="contenedor">
-    <h1>Mi perfil</h1>
-    <form id="perfilForm" class="formulario-registro">
-      <input id="perfilNombre" placeholder="Nombre" required>
-      <input id="perfilApellido" placeholder="Apellido">
-      <input id="perfilProfesion" placeholder="Profesión">
-      <input id="perfilDedicacion" placeholder="¿A qué te dedicas?">
-      <input id="perfilBusqueda" placeholder="Qué trabajos buscas">
-      <input id="perfilHojaVida" type="file" accept="application/pdf">
-      <button class="boton" type="submit">Guardar</button>
-    </form>
+  <div class="header-top">
+    <div class="cuenta" onclick="location.href='usuario.html'">← Volver</div>
   </div>
 
-  <script src="JS/usuario.js"></script>
+  <div class="contenedor wide perfil-layout">
+
+    <!-- COLUMNA IZQUIERDA: foto + resumen -->
+    <div class="perfil-sidebar">
+      <div class="perfil-foto-wrap">
+        <div class="perfil-foto" id="fotoPreview">
+          <span id="fotoIniciales">?</span>
+          <img id="fotoImg" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:50%">
+        </div>
+        <label class="perfil-foto-btn">
+          <input type="file" id="inputFoto" accept="image/*" style="display:none">
+          📷 Cambiar foto
+        </label>
+      </div>
+
+      <div class="perfil-resumen">
+        <div class="perfil-resumen-nombre" id="resumenNombre">Tu nombre</div>
+        <div class="perfil-resumen-prof" id="resumenProfesion">Profesión</div>
+        <div class="perfil-resumen-ciudad" id="resumenCiudad">Ciudad</div>
+      </div>
+
+      <div class="perfil-stats">
+        <div class="perfil-stat">
+          <strong id="statPost">0</strong>
+          <small>Postulaciones</small>
+        </div>
+        <div class="perfil-stat">
+          <strong id="statCV">—</strong>
+          <small>CV adjunto</small>
+        </div>
+      </div>
+
+      <button class="boton" style="width:100%;background:rgba(226,75,74,0.15);border:1px solid rgba(226,75,74,0.3);color:#e24b4a" onclick="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    </div>
+
+    <!-- COLUMNA DERECHA: formulario -->
+    <div class="perfil-main">
+
+      <div class="perfil-seccion">
+        <div class="perfil-seccion-titulo">Información personal</div>
+        <form id="perfilForm" class="perfil-grid">
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Nombre</label>
+            <input class="perfil-input" id="perfilNombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Apellido</label>
+            <input class="perfil-input" id="perfilApellido" placeholder="Tu apellido">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Profesión u oficio</label>
+            <input class="perfil-input" id="perfilProfesion" placeholder="Ej: Desarrollador web">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Ciudad</label>
+            <input class="perfil-input" id="perfilCiudad" placeholder="Tu ciudad">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Teléfono / WhatsApp</label>
+            <input class="perfil-input" id="perfilTelefono" placeholder="3001234567" type="tel">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Correo electrónico</label>
+            <input class="perfil-input" id="perfilEmail" placeholder="correo@ejemplo.com" type="email" disabled>
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">¿A qué te dedicas?</label>
+            <input class="perfil-input" id="perfilDedicacion" placeholder="Describe brevemente tu actividad actual">
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">¿Qué tipo de empleo buscas?</label>
+            <input class="perfil-input" id="perfilBusqueda" placeholder="Ej: Empleo remoto en tecnología">
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Experiencia laboral</label>
+            <textarea class="perfil-input" id="perfilExperiencia" rows="4" placeholder="Describe tu experiencia, empresas donde has trabajado, logros..."></textarea>
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Habilidades</label>
+            <input class="perfil-input" id="perfilHabilidades" placeholder="Ej: Excel, Python, Atención al cliente, Liderazgo">
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Nivel educativo</label>
+            <select class="perfil-input" id="perfilEducacion">
+              <option value="">Selecciona...</option>
+              <option value="bachiller">Bachiller</option>
+              <option value="tecnico">Técnico</option>
+              <option value="tecnologo">Tecnólogo</option>
+              <option value="universitario">Universitario</option>
+              <option value="posgrado">Posgrado</option>
+            </select>
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Hoja de vida (PDF)</label>
+            <label class="cv-upload-label">
+              <input type="file" id="perfilHojaVida" accept="application/pdf" style="display:none">
+              <span class="cv-upload-btn">📄 Subir CV</span>
+              <span class="cv-nombre" id="cvNombreLabel">Ningún archivo seleccionado</span>
+            </label>
+          </div>
+          <div class="perfil-campo full">
+            <button class="boton" type="submit" style="width:100%">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function getUsers(){ return JSON.parse(localStorage.getItem('empleateya_users')||'[]'); }
+    function getPostulaciones(){ return JSON.parse(localStorage.getItem('empleateya_postulaciones')||'[]'); }
+
+    const user = JSON.parse(localStorage.getItem('empleateya_user')||'null');
+    if(!user){ window.location.href='login.html'; }
+
+    function cargarPerfil(){
+      if(!user) return;
+      document.getElementById('perfilNombre').value = user.nombre||'';
+      document.getElementById('perfilApellido').value = user.apellido||'';
+      document.getElementById('perfilProfesion').value = user.profesion||'';
+      document.getElementById('perfilCiudad').value = user.ciudad||'';
+      document.getElementById('perfilTelefono').value = user.telefono||'';
+      document.getElementById('perfilEmail').value = user.email||'';
+      document.getElementById('perfilDedicacion').value = user.dedicacion||'';
+      document.getElementById('perfilBusqueda').value = user.busqueda||'';
+      document.getElementById('perfilExperiencia').value = user.experiencia||'';
+      document.getElementById('perfilHabilidades').value = user.habilidades||'';
+      document.getElementById('perfilEducacion').value = user.educacion||'';
+      if(user.cvNombre) document.getElementById('cvNombreLabel').textContent = user.cvNombre;
+
+      actualizarResumen();
+      cargarFoto();
+
+      const posts = getPostulaciones().filter(p=>p.email===user.email);
+      document.getElementById('statPost').textContent = posts.length;
+      document.getElementById('statCV').textContent = user.cvNombre ? '✓' : '—';
+    }
+
+    function actualizarResumen(){
+      const nombre = (document.getElementById('perfilNombre').value||'') + ' ' + (document.getElementById('perfilApellido').value||'');
+      document.getElementById('resumenNombre').textContent = nombre.trim()||'Tu nombre';
+      document.getElementById('resumenProfesion').textContent = document.getElementById('perfilProfesion').value||'Profesión';
+      document.getElementById('resumenCiudad').textContent = document.getElementById('perfilCiudad').value||'Ciudad';
+      const ini = (document.getElementById('perfilNombre').value||'?')[0].toUpperCase();
+      document.getElementById('fotoIniciales').textContent = ini;
+    }
+
+    function cargarFoto(){
+      if(user.foto){
+        document.getElementById('fotoImg').src = user.foto;
+        document.getElementById('fotoImg').style.display = 'block';
+        document.getElementById('fotoIniciales').style.display = 'none';
+      }
+    }
+
+    document.getElementById('inputFoto').addEventListener('change', function(){
+      const file = this.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        document.getElementById('fotoImg').src = e.target.result;
+        document.getElementById('fotoImg').style.display = 'block';
+        document.getElementById('fotoIniciales').style.display = 'none';
+        user.foto = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('perfilHojaVida').addEventListener('change', function(){
+      if(this.files[0]) document.getElementById('cvNombreLabel').textContent = this.files[0].name;
+    });
+
+    ['perfilNombre','perfilApellido','perfilProfesion','perfilCiudad'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', actualizarResumen);
+    });
+
+    document.getElementById('perfilForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      user.nombre = document.getElementById('perfilNombre').value;
+      user.apellido = document.getElementById('perfilApellido').value;
+      user.profesion = document.getElementById('perfilProfesion').value;
+      user.ciudad = document.getElementById('perfilCiudad').value;
+      user.telefono = document.getElementById('perfilTelefono').value;
+      user.dedicacion = document.getElementById('perfilDedicacion').value;
+      user.busqueda = document.getElementById('perfilBusqueda').value;
+      user.experiencia = document.getElementById('perfilExperiencia').value;
+      user.habilidades = document.getElementById('perfilHabilidades').value;
+      user.educacion = document.getElementById('perfilEducacion').value;
+      const cvInput = document.getElementById('perfilHojaVida');
+      if(cvInput.files[0]) user.cvNombre = cvInput.files[0].name;
+
+      localStorage.setItem('empleateya_user', JSON.stringify(user));
+      let users = getUsers();
+      users = users.map(u => u.email===user.email ? user : u);
+      localStorage.setItem('empleateya_users', JSON.stringify(users));
+      alert('Perfil guardado con éxito');
+      actualizarResumen();
+    });
+
+    function cerrarSesion(){
+      localStorage.removeItem('empleateya_user');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarPerfil);
+  </script>
 </body>
 </html>

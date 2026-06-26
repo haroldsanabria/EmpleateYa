@@ -1,34 +1,244 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EmpléateYA - Inicio</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Perfil Empresa - EmpléateYA</title>
   <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body class="inicio">
+  <div class="header-top">
+    <div class="cuenta" onclick="location.href='empresa.html'">← Volver</div>
+  </div>
 
-  <!-- PANEL IZQUIERDO -->
-  <div class="hero-left">
-    <div class="hero-pill">✦ Plataforma de empleo</div>
-    <p class="hero-empleate">Empleate</p>
-    <p class="hero-ya">YA</p>
-    <p class="hero-sub">Tu próximo trabajo está a un clic.<br>Conectamos talento con oportunidades reales.</p>
-    <div class="hero-stats">
-      <div class="hero-stat"><strong>2.4k+</strong><small>Vacantes activas</small></div>
-      <div class="hero-stat"><strong>98%</strong><small>Tasa de éxito</small></div>
+  <div class="contenedor wide perfil-layout">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="perfil-sidebar">
+      <div class="perfil-foto-wrap">
+        <div class="perfil-foto empresa" id="fotoPreview">
+          <span id="fotoIniciales">?</span>
+          <img id="fotoImg" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:16px">
+        </div>
+        <label class="perfil-foto-btn">
+          <input type="file" id="inputFoto" accept="image/*" style="display:none">
+          📷 Subir logo
+        </label>
+      </div>
+
+      <div class="perfil-resumen">
+        <div class="perfil-resumen-nombre" id="resumenNombre">Nombre empresa</div>
+        <div class="perfil-resumen-prof" id="resumenSector">Sector</div>
+        <div class="perfil-resumen-ciudad" id="resumenCiudad">Ciudad</div>
+      </div>
+
+      <div class="perfil-stats">
+        <div class="perfil-stat">
+          <strong id="statOfertas">0</strong>
+          <small>Ofertas activas</small>
+        </div>
+        <div class="perfil-stat">
+          <strong id="statPost">0</strong>
+          <small>Postulantes</small>
+        </div>
+      </div>
+
+      <button class="boton" style="width:100%;background:rgba(226,75,74,0.15);border:1px solid rgba(226,75,74,0.3);color:#e24b4a" onclick="cerrarSesion()">
+        Cerrar sesión
+      </button>
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="perfil-main">
+
+      <div class="perfil-seccion">
+        <div class="perfil-seccion-titulo">Información de la empresa</div>
+        <form id="perfilEmpresaForm" class="perfil-grid">
+
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Nombre de la empresa</label>
+            <input class="perfil-input" id="empresaNombre" placeholder="Nombre oficial" required>
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">NIT</label>
+            <input class="perfil-input" id="empresaNit" placeholder="Ej: 900123456-1">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Ciudad</label>
+            <input class="perfil-input" id="empresaCiudad" placeholder="Ciudad principal">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Dirección</label>
+            <input class="perfil-input" id="empresaDireccion" placeholder="Dirección física">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">WhatsApp de contacto</label>
+            <input class="perfil-input" id="empresaWhatsapp" placeholder="3001234567" type="tel">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Correo electrónico</label>
+            <input class="perfil-input" id="empresaEmail" disabled>
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Sitio web</label>
+            <input class="perfil-input" id="empresaWeb" placeholder="https://tuempresa.com" type="url">
+          </div>
+          <div class="perfil-campo">
+            <label class="perfil-campo-label">Tamaño de la empresa</label>
+            <select class="perfil-input" id="empresaTamano">
+              <option value="">Selecciona...</option>
+              <option value="1-10">1 – 10 empleados</option>
+              <option value="11-50">11 – 50 empleados</option>
+              <option value="51-200">51 – 200 empleados</option>
+              <option value="201-500">201 – 500 empleados</option>
+              <option value="500+">Más de 500</option>
+            </select>
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Sector / Industria</label>
+            <div class="sector-grid" id="sectorGrid">
+              <button type="button" class="sector-card" data-val="tecnologia">💻 Tecnología</button>
+              <button type="button" class="sector-card" data-val="comercio">🛒 Comercio</button>
+              <button type="button" class="sector-card" data-val="construccion">🏗️ Construcción</button>
+              <button type="button" class="sector-card" data-val="salud">🏥 Salud</button>
+              <button type="button" class="sector-card" data-val="educacion">🎓 Educación</button>
+              <button type="button" class="sector-card" data-val="alimentos">🍽️ Alimentos</button>
+              <button type="button" class="sector-card" data-val="logistica">🚚 Logística</button>
+              <button type="button" class="sector-card" data-val="otro">⚙️ Otro</button>
+            </div>
+            <input type="hidden" id="empresaSector">
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Descripción de la empresa</label>
+            <textarea class="perfil-input" id="empresaDescripcion" rows="4" placeholder="Cuéntanos qué hace tu empresa, su misión y valores..."></textarea>
+          </div>
+          <div class="perfil-campo full">
+            <label class="perfil-campo-label">Foto / Logo</label>
+            <label class="cv-upload-label">
+              <input type="file" id="inputFoto2" accept="image/*" style="display:none">
+              <span class="cv-upload-btn">🖼️ Subir logo</span>
+              <span class="cv-nombre" id="logoNombre">Ningún archivo seleccionado</span>
+            </label>
+          </div>
+          <div class="perfil-campo full">
+            <button class="boton" type="submit" style="width:100%">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 
-  <!-- PANEL DERECHO -->
-  <div class="contenedor">
-    <h1>EmpléateYA</h1>
-    <p>Encuentra trabajo o publica ofertas fácilmente.</p>
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:8px">
-      <a class="boton" href="registro.html">Registrarse</a>
-      <a class="boton sec" href="login.html">Iniciar sesión</a>
-    </div>
-  </div>
+  <script>
+    function getUsers(){ return JSON.parse(localStorage.getItem('empleateya_users')||'[]'); }
+    function getOffers(){ return JSON.parse(localStorage.getItem('empleateya_offers')||'[]'); }
+    function getPostulaciones(){ return JSON.parse(localStorage.getItem('empleateya_postulaciones')||'[]'); }
 
+    const user = JSON.parse(localStorage.getItem('empleateya_user')||'null');
+    if(!user || user.tipo !== 'empresa'){ window.location.href='login.html'; }
+
+    function cargarPerfil(){
+      if(!user) return;
+      document.getElementById('empresaNombre').value = user.nombre||user.nombreEmpresa||'';
+      document.getElementById('empresaNit').value = user.nit||'';
+      document.getElementById('empresaCiudad').value = user.ciudad||'';
+      document.getElementById('empresaDireccion').value = user.direccion||'';
+      document.getElementById('empresaWhatsapp').value = user.whatsapp||'';
+      document.getElementById('empresaEmail').value = user.email||'';
+      document.getElementById('empresaWeb').value = user.web||'';
+      document.getElementById('empresaTamano').value = user.tamano||'';
+      document.getElementById('empresaSector').value = user.sector||'';
+      document.getElementById('empresaDescripcion').value = user.descripcion||'';
+
+      if(user.sector){
+        document.querySelectorAll('.sector-card').forEach(b=>{
+          if(b.dataset.val===user.sector) b.classList.add('activo');
+        });
+      }
+
+      actualizarResumen();
+      cargarFoto();
+
+      const misOfertas = getOffers().filter(o=>o.empresaEmail===user.email);
+      const posts = getPostulaciones().filter(p=>misOfertas.some(o=>o.id===p.ofertaId));
+      document.getElementById('statOfertas').textContent = misOfertas.length;
+      document.getElementById('statPost').textContent = posts.length;
+    }
+
+    function actualizarResumen(){
+      document.getElementById('resumenNombre').textContent = document.getElementById('empresaNombre').value||'Nombre empresa';
+      document.getElementById('resumenSector').textContent = document.getElementById('empresaSector').value||'Sector';
+      document.getElementById('resumenCiudad').textContent = document.getElementById('empresaCiudad').value||'Ciudad';
+      const ini = (document.getElementById('empresaNombre').value||'?')[0].toUpperCase();
+      document.getElementById('fotoIniciales').textContent = ini;
+    }
+
+    function cargarFoto(){
+      if(user.foto){
+        document.getElementById('fotoImg').src = user.foto;
+        document.getElementById('fotoImg').style.display = 'block';
+        document.getElementById('fotoIniciales').style.display = 'none';
+      }
+    }
+
+    function subirFoto(input){
+      const file = input.files[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        document.getElementById('fotoImg').src = e.target.result;
+        document.getElementById('fotoImg').style.display = 'block';
+        document.getElementById('fotoIniciales').style.display = 'none';
+        user.foto = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('inputFoto').addEventListener('change', function(){ subirFoto(this); });
+    document.getElementById('inputFoto2').addEventListener('change', function(){
+      subirFoto(this);
+      document.getElementById('logoNombre').textContent = this.files[0]?this.files[0].name:'';
+    });
+
+    document.querySelectorAll('.sector-card').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.sector-card').forEach(b=>b.classList.remove('activo'));
+        btn.classList.add('activo');
+        document.getElementById('empresaSector').value = btn.dataset.val;
+        actualizarResumen();
+      });
+    });
+
+    ['empresaNombre','empresaCiudad'].forEach(id=>{
+      document.getElementById(id).addEventListener('input', actualizarResumen);
+    });
+
+    document.getElementById('perfilEmpresaForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      user.nombre = document.getElementById('empresaNombre').value;
+      user.nombreEmpresa = user.nombre;
+      user.nit = document.getElementById('empresaNit').value;
+      user.ciudad = document.getElementById('empresaCiudad').value;
+      user.direccion = document.getElementById('empresaDireccion').value;
+      user.whatsapp = document.getElementById('empresaWhatsapp').value;
+      user.web = document.getElementById('empresaWeb').value;
+      user.tamano = document.getElementById('empresaTamano').value;
+      user.sector = document.getElementById('empresaSector').value;
+      user.descripcion = document.getElementById('empresaDescripcion').value;
+
+      localStorage.setItem('empleateya_user', JSON.stringify(user));
+      let users = getUsers();
+      users = users.map(u => u.email===user.email ? user : u);
+      localStorage.setItem('empleateya_users', JSON.stringify(users));
+      alert('Perfil guardado con éxito');
+      actualizarResumen();
+    });
+
+    function cerrarSesion(){
+      localStorage.removeItem('empleateya_user');
+      window.location.href = 'index.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarPerfil);
+  </script>
 </body>
 </html>

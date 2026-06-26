@@ -1,101 +1,80 @@
 // REGISTRO
+function getUsers(){ return JSON.parse(localStorage.getItem('empleateya_users') || '[]'); }
+function saveUsers(list){ localStorage.setItem('empleateya_users', JSON.stringify(list)); }
 
+// ─── REGISTRO (registro.html) ───
 if (document.getElementById('formRegistro')) {
+  document.getElementById('formRegistro').addEventListener('submit', e => {
+    e.preventDefault();
 
-    const form = document.getElementById('formRegistro');
+    const tipo = document.getElementById('regTipo').value; // 'usuario' o 'empresa'
 
-    form.addEventListener('submit', async (e) => {
+    // Campos comunes
+    const nombre = document.getElementById('regNombre').value.trim();
+    const documento = document.getElementById('regDocumento').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const pass = document.getElementById('regPass').value;
+    const ciudad = document.getElementById('regCiudad').value.trim();
 
-        e.preventDefault();
+    // Validar email duplicado
+    const users = getUsers();
+    if (users.some(u => u.email === email)) {
+      alert('Ya existe una cuenta con ese correo.');
+      return;
+    }
 
-        const datos = {
-            nombre: document.getElementById('regNombre').value,
-            num_documento_identidad: document.getElementById('regDocumento').value,
-            correo: document.getElementById('regEmail').value,
-            contraseña: document.getElementById('regPass').value,
-            ciudad: document.getElementById('regCiudad').value,
-            experiencia: document.getElementById('regExperiencia').value
-        };
+    let nuevoUsuario = {
+      tipo,
+      nombre,
+      documento,
+      email,
+      pass,
+      ciudad
+    };
 
-        try {
+    if (tipo === 'usuario') {
+      nuevoUsuario.experiencia = document.getElementById('regExperiencia').value.trim();
+      nuevoUsuario.profesion   = document.getElementById('regProfesion').value.trim();
+      nuevoUsuario.busqueda    = document.getElementById('regBusqueda').value.trim();
+    } else {
+      nuevoUsuario.nombreEmpresa = document.getElementById('empNombreEmpresa').value.trim();
+      nuevoUsuario.direccion     = document.getElementById('empDireccion').value.trim();
+      nuevoUsuario.whatsapp      = document.getElementById('empWhatsapp').value.trim();
+      nuevoUsuario.sector        = document.getElementById('empSector').value;
+      nuevoUsuario.nit           = document.getElementById('empNit').value.trim();
+      nuevoUsuario.descripcion   = document.getElementById('empDescripcion').value.trim();
+      // El "nombre" visible para empresa será el de la empresa
+      nuevoUsuario.nombre = nuevoUsuario.nombreEmpresa || nombre;
+    }
 
-            const respuesta = await fetch('http://localhost:3000/registro', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datos)
-            });
+    users.push(nuevoUsuario);
+    saveUsers(users);
 
-            const mensaje = await respuesta.text();
+    // Inicia sesión automáticamente tras registrarse
+    localStorage.setItem('empleateya_user', JSON.stringify(nuevoUsuario));
 
-            alert(mensaje);
-
-            window.location.href = 'login.html';
-
-        } catch (error) {
-
-            console.error(error);
-            alert('Error al registrar usuario');
-
-        }
-
-    });
-
+    alert('Cuenta creada con éxito');
+    window.location.href = (tipo === 'empresa') ? 'empresa.html' : 'usuario.html';
+  });
 }
 
-
-// LOGIN
-
+// ─── LOGIN (login.html) ───
 if (document.getElementById('formLogin')) {
+  document.getElementById('formLogin').addEventListener('submit', e => {
+    e.preventDefault();
 
-    const form = document.getElementById('formLogin');
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass  = document.getElementById('loginPass').value;
 
-    form.addEventListener('submit', async (e) => {
+    const users = getUsers();
+    const encontrado = users.find(u => u.email === email && u.pass === pass);
 
-        e.preventDefault();
+    if (!encontrado) {
+      alert('Correo o contraseña incorrectos.');
+      return;
+    }
 
-        const datos = {
-            correo: document.getElementById('loginEmail').value,
-            contraseña: document.getElementById('loginPass').value
-        };
-
-        try {
-
-            const respuesta = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datos)
-            });
-
-            const resultado = await respuesta.json();
-
-            if (resultado.success) {
-
-                localStorage.setItem(
-                    'empleateya_user',
-                    JSON.stringify(resultado.usuario)
-                );
-
-                alert('Bienvenido');
-
-                window.location.href = 'opciones.html';
-
-            } else {
-
-                alert(resultado.mensaje);
-
-            }
-
-        } catch (error) {
-
-            console.error(error);
-            alert('Error al iniciar sesión');
-
-        }
-
-    });
-
+    localStorage.setItem('empleateya_user', JSON.stringify(encontrado));
+    window.location.href = (encontrado.tipo === 'empresa') ? 'empresa.html' : 'usuario.html';
+  });
 }

@@ -7,12 +7,57 @@
 
   <div class="contenedor">
     <h1>Publicar oferta</h1>
+    <p>Completa los datos para encontrar el candidato ideal</p>
+
     <form id="formOferta" class="formulario-registro">
-      <input id="ofertaTitulo" placeholder="Título" required>
-      <input id="ofertaUbicacion" placeholder="Ubicación / link G">
-      <select id="ofertaArea"><option value="programacion">programacion<option value="casa">casa<option value="finansas">finansas</option><option value="Ventas">Ventas</option></select>
-      <textarea id="ofertaDesc" placeholder="Descripción"></textarea>
-      <button class="boton" type="submit">Publicar</button>
+
+      <input id="ofertaTitulo" type="text" placeholder="Título del puesto" required>
+
+      <select id="ofertaArea" required>
+        <option value="">Selecciona un área</option>
+        <option value="programacion">Programación</option>
+        <option value="casa">Servicios domésticos</option>
+        <option value="finansas">Finanzas</option>
+        <option value="Ventas">Ventas</option>
+        <option value="salud">Salud</option>
+        <option value="educacion">Educación</option>
+        <option value="construccion">Construcción</option>
+        <option value="logistica">Logística</option>
+        <option value="otro">Otro</option>
+      </select>
+
+      <input id="ofertaUbicacion" type="text" placeholder="Ubicación (ciudad / dirección / link Google Maps)">
+
+      <select id="ofertaTipoContrato">
+        <option value="">Tipo de contrato</option>
+        <option value="indefinido">Término indefinido</option>
+        <option value="fijo">Término fijo</option>
+        <option value="prestacion">Prestación de servicios</option>
+        <option value="practica">Práctica / pasantía</option>
+        <option value="medio_tiempo">Medio tiempo</option>
+      </select>
+
+      <select id="ofertaModalidad">
+        <option value="">Modalidad</option>
+        <option value="presencial">Presencial</option>
+        <option value="remoto">Remoto</option>
+        <option value="hibrido">Híbrido</option>
+      </select>
+
+      <div style="display:flex;gap:12px">
+        <input id="ofertaSalarioMin" type="number" placeholder="Salario mínimo" style="flex:1">
+        <input id="ofertaSalarioMax" type="number" placeholder="Salario máximo" style="flex:1">
+      </div>
+
+      <input id="ofertaVacantes" type="number" min="1" placeholder="Número de vacantes" value="1">
+
+      <input id="ofertaExperiencia" type="text" placeholder="Experiencia requerida (ej: 1 año, sin experiencia)">
+
+      <textarea id="ofertaRequisitos" placeholder="Requisitos del candidato" rows="3"></textarea>
+
+      <textarea id="ofertaDesc" placeholder="Descripción del puesto" rows="4" required></textarea>
+
+      <button class="boton" type="submit">Publicar oferta</button>
     </form>
   </div>
 
