@@ -1,7 +1,15 @@
 {
+  "name": "empleateya-backend",
+  "version": "1.0.0",
+  "description": "Backend de EmpleateYa",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "mssql": "^12.5.5"
+    "mssql": "^12.5.5",
+    "mysql2": "^3.22.5"
   }
 }
