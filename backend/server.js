@@ -8,11 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conexión a Hostinger MySQL
 const db = mysql.createPool({
-    host: 'auth-db1352.hstgr.io',
+    host: 'srv1352.hstgr.io',
     user: 'u956672857_empleateya',
-    password: 'EmpleateYa2026!',
+    password: 'TU_CONTRASEÑA',
     database: 'u956672857_empleateya',
     port: 3306,
     waitForConnections: true,
