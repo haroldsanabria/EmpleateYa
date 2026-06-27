@@ -12,7 +12,7 @@ app.use(express.json());
 const db = mysql.createPool({
     host: 'auth-db1352.hstgr.io',
     user: 'u956672857_empleateya',
-    password: 'EmpleateYa25',
+    password: 'EmpleateYa2026!',
     database: 'u956672857_empleateya',
     port: 3306,
     waitForConnections: true,
