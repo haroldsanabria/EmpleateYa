@@ -1,10 +1,3 @@
-function getOffers(){
-  const offers = JSON.parse(localStorage.getItem('empleateya_offers')||'[]');
-  let cambiado=false;
-  offers.forEach((o,i)=>{ if(!o.id){ o.id='oferta_'+i+'_'+Date.now(); cambiado=true; } });
-  if(cambiado) localStorage.setItem('empleateya_offers',JSON.stringify(offers));
-  return offers;
-}
 function getPostulaciones(){ return JSON.parse(localStorage.getItem('empleateya_postulaciones')||'[]'); }
 function savePostulaciones(l){ localStorage.setItem('empleateya_postulaciones',JSON.stringify(l)); }
 
@@ -84,7 +77,7 @@ function renderPostulaciones(){
 
   cont.innerHTML='';
   if(misPosts.length===0){ cont.innerHTML='<p class="empty-msg">Aún no te has postulado a ninguna oferta.<br><button class="boton" style="margin-top:12px" onclick="cambiarPanel(\'ofertas\',document.querySelector(\'.panel-tab\'))">Ver ofertas</button></p>'; return; }
-  const ofertas=getOffers();
+  const ofertas = ofertasActuales;
   misPosts.slice().reverse().forEach(p=>{
     const of=ofertas.find(o=>o.id===p.ofertaId)||{};
     const salario=(of.salarioMin||of.salarioMax)
@@ -185,21 +178,30 @@ function postularme(ofertaId,tituloOferta,cvNombre){
   alert('¡Postulación enviada!');
   const m=document.getElementById('modalDetalle'); if(m) m.remove();
 }
-
 function aplicarFiltro(){
-  const txt=(document.getElementById('search')?.value||'').toLowerCase();
-  const area=document.getElementById('filtroArea')?.value||'';
-  const f=getOffers().filter(o=>{
-    const t=!txt||o.titulo.toLowerCase().includes(txt)||(o.empresa||'').toLowerCase().includes(txt)||(o.ubicacion||'').toLowerCase().includes(txt);
-    const a=!area||o.area===area;
-    const m=!filtroModalidadVal||(o.modalidad||'')=== filtroModalidadVal;
-    const c=!filtroContratoVal||(o.tipoContrato||'')===filtroContratoVal;
-    const s=!filtroSalarioVal||Number(o.salarioMin||0)>=filtroSalarioVal;
-    return t&&a&&m&&c&&s;
-  });
-  ofertasActuales=f; renderOfertas(f);
-}
 
+  const txt = (document.getElementById('search')?.value || '').toLowerCase();
+  const area = document.getElementById('filtroArea')?.value || '';
+
+  const f = ofertasActuales.filter(o => {
+
+    const t =
+      !txt ||
+      o.titulo.toLowerCase().includes(txt) ||
+      (o.empresa || '').toLowerCase().includes(txt);
+
+    const a = !area || o.area === area;
+    const m = !filtroModalidadVal || (o.modalidad || '') === filtroModalidadVal;
+    const c = !filtroContratoVal || (o.tipoContrato || '') === filtroContratoVal;
+    const s = !filtroSalarioVal || Number(o.salarioMin || 0) >= filtroSalarioVal;
+
+    return t && a && m && c && s;
+
+  });
+
+  renderOfertas(f);
+
+}
 function limpiarFiltros(){
   document.getElementById('search').value='';
   document.getElementById('filtroArea').value='';
@@ -207,7 +209,24 @@ function limpiarFiltros(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('activo'));
   document.querySelectorAll('.chip[data-val=""]').forEach(c=>c.classList.add('activo'));
   document.querySelectorAll('#filtroSalario .chip[data-val="0"]').forEach(c=>c.classList.add('activo'));
-  ofertasActuales=getOffers(); renderOfertas(ofertasActuales);
+  fetch('https://empleateya-w20x.onrender.com/ofertas')
+  .then(res => res.json())
+  .then(datos => {
+
+    ofertasActuales = datos.map(o => ({
+      id: o.id_oferta,
+      titulo: o.titulo,
+      descripcion: o.descripcion,
+      empresa: 'Empresa #' + o.id_empresa,
+      salarioMin: o.salario,
+      salarioMax: o.salario,
+      modalidad: o.modalidad,
+      fecha: o.fecha_publicacion
+    }));
+
+    renderOfertas(ofertasActuales);
+
+  });
 }
 
 function ordenar(tipo,el){
@@ -226,28 +245,62 @@ function cambiarPanel(panel,el){
   el.classList.add('active');
   if(panel==='postulaciones') renderPostulaciones();
 }
+document.addEventListener('DOMContentLoaded', async ()=>{
 
-document.addEventListener('DOMContentLoaded',()=>{
-  ofertasActuales=getOffers(); renderOfertas(ofertasActuales);
+  try {
+
+    const respuesta = await fetch('https://empleateya-w20x.onrender.com/ofertas');
+    const datos = await respuesta.json();
+
+    ofertasActuales = datos.map(o => ({
+      id: o.id_oferta,
+      titulo: o.titulo,
+      descripcion: o.descripcion,
+      empresa: 'Empresa #' + o.id_empresa,
+      salarioMin: o.salario,
+      salarioMax: o.salario,
+      modalidad: o.modalidad,
+      fecha: o.fecha_publicacion
+    }));
+
+    renderOfertas(ofertasActuales);
+
+  } catch(error){
+
+    console.error(error);
+    alert('Error al cargar ofertas');
+
+  }
+
   const s=document.getElementById('search');
+
   if(s) s.addEventListener('input',aplicarFiltro);
 
   document.querySelectorAll('#filtroModalidad .chip').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('#filtroModalidad .chip').forEach(c=>c.classList.remove('activo'));
-      btn.classList.add('activo'); filtroModalidadVal=btn.dataset.val; aplicarFiltro();
+      btn.classList.add('activo');
+      filtroModalidadVal=btn.dataset.val;
+      aplicarFiltro();
     });
   });
+
   document.querySelectorAll('#filtroContrato .chip').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('#filtroContrato .chip').forEach(c=>c.classList.remove('activo'));
-      btn.classList.add('activo'); filtroContratoVal=btn.dataset.val; aplicarFiltro();
+      btn.classList.add('activo');
+      filtroContratoVal=btn.dataset.val;
+      aplicarFiltro();
     });
   });
+
   document.querySelectorAll('#filtroSalario .chip').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.querySelectorAll('#filtroSalario .chip').forEach(c=>c.classList.remove('activo'));
-      btn.classList.add('activo'); filtroSalarioVal=Number(btn.dataset.val); aplicarFiltro();
+      btn.classList.add('activo');
+      filtroSalarioVal=Number(btn.dataset.val);
+      aplicarFiltro();
     });
   });
-}); 
+
+});

@@ -148,7 +148,12 @@ app.get('/ofertas', async (req, res) => {
 
     try {
 
-        const [rows] = await db.query("SELECT * FROM oferta");
+        const [rows] = await db.query(`
+            SELECT o.*, e.nombre AS empresa
+            FROM oferta o
+            INNER JOIN empresa e
+            ON o.id_empresa = e.id_empresa
+        `);
 
         res.json(rows);
 
